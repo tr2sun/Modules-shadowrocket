@@ -1,67 +1,53 @@
-#!name=All In One 2026 (VIP + AntiAds)
-#!desc=Updated by SonTr for 2026 (YouTube, Spotify, Locket, VSCO, PicsArt, Wink, Elsa, Duolingo, Kinemaster, Truecaller, etc.)
+#!name=All In One 2026 (User Collection)
+#!desc=Tổng hợp đầy đủ các Module từ yFamilys, iSteal-it, Little34306... (YouTube, Spotify, Locket, VSCO, Alight...)
 #!author=SonTr
 #!icon=https://raw.githubusercontent.com/deezertidal/shadowrocket-rules/main/icon/ct.png
 
 [Rule]
-# --- BLOCK ADS ---
-# YouTube Ads (UDP)
 AND,((DOMAIN-SUFFIX,googlevideo.com),(PROTOCOL,UDP)),REJECT
 AND,((DOMAIN,youtubei.googleapis.com),(PROTOCOL,UDP)),REJECT
-# General Ads
-DOMAIN-KEYWORD,adservice,REJECT
-DOMAIN-SUFFIX,doubleclick.net,REJECT
-DOMAIN-SUFFIX,googleadservices.com,REJECT
 
-[URL Rewrite]
-# YouTube Ads Block
+[Url Rewrite]
 ^https?:\/\/[\w-]+\.googlevideo\.com\/(?!(dclk_video_ads|videoplayback\?)).+&oad _ reject-200
 ^https?:\/\/(www|s)\.youtube\.com\/api\/stats\/ads _ reject-200
-^https?:\/\/(www|s)\.youtube\.com\/(pagead|ptracking) _ reject-200
-^https?:\/\/s\.youtube\.com\/api\/stats\/qoe\?adcontext _ reject-200
 
 [Script]
-# --- YOUTUBE PREMIUM (Maasea) ---
+
+# --- 1. YOUTUBE PREMIUM (yFamilys) ---
 YouTube = type=http-response,pattern=^https:\/\/youtubei\.googleapis\.com\/youtubei\/v1\/(browse|next|player|search|reel\/reel_watch_sequence|guide|account\/get_setting|get_watch),requires-body=1,max-size=-1,script-path=https://raw.githubusercontent.com/Maasea/sgmodule/master/Script/Youtube/youtube.js
 
-# --- SPOTIFY PREMIUM (app2smile) ---
+# --- 2. SPOTIFY PREMIUM (yFamilys) ---
 Spotify = type=http-request,pattern=^https:\/\/spclient\.wg\.spotify\.com\/(.(?!BOOTSTRAP))*$,requires-body=1,max-size=-1,script-path=https://raw.githubusercontent.com/app2smile/rules/master/js/spotify.js
 
-# --- LOCKET GOLD (chxm1023) ---
-Locket = type=http-response,pattern=^https?:\/\/api\.revenuecat\.com\/v1\/(subscribers\/[^\/]+$|receipts$),requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/Locket.js
+# --- 3. SOUNDCLOUD (yFamilys) ---
+SoundCloud = type=http-response,pattern=^https?:\/\/api-v2\.soundcloud\.com\/me\/(subscription|features),requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/yfamily/Script/main/soundcloud.js
 
-# --- VSCO X (chxm1023) ---
+# --- 4. VSCO (yFamilys) ---
 VSCO = type=http-response,pattern=^https?:\/\/api\.revenuecat\.com\/v1\/(subscribers\/[^\/]+$|receipts$),requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/VSCO.js
 
-# --- PICSART GOLD (chxm1023) ---
-PicsArt = type=http-response,pattern=^https?:\/\/api\.picsart\.com\/gw-v2\/shop\/subscription\/apple\/purchases$,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/PicsArt.js
+# --- 5. ALIGHT MOTION (iSteal-it Script) ---
+Alightmotion = type=http-response,script-path=https://raw.githubusercontent.com/iSteal-it/script/refs/heads/main/alight-motion.json,pattern=^https:\/\/us-central1-alight-creative\.cloudfunctions\.net\/getAccountStatusAndLicenses,max-size=131072,requires-body=true,timeout=10,enable=true
 
-# --- WINK VIP (chxm1023) ---
+# --- 6. PICSART (yFamilys) ---
+PicsArt = type=http-request,pattern=^https:\/\/api\.picsart\.com\/gw-v2\/shop\/subscription\/apple\/purchases,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/PicsArt.js,requires-body=true,timeout=60
+
+# --- 7. WINK (yFamilys) ---
 Wink = type=http-response,pattern=^https?:\/\/(api|vn-api)\.getwinkapp\.com\/v\d\/user\/vip_info_by_group\.json,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/Wink.js
 
-# --- ELSA SPEAK (chxm1023) ---
-Elsa = type=http-response,pattern=^https?:\/\/pool\.elsanow\.io\/user\/api\/v2\/purchase$,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/Elsa.js
+# --- 8. TRUECALLER (Little34306) ---
+Truecaller = type=http-response,pattern=^https?:\/\/premium-kindle\.truecaller\.com\/v\d\/subscriptions\/status$,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/Little34306/little34306.github.io/refs/heads/main/Script/truecaller.js
 
-# --- DUOLINGO SUPER (chxm1023) ---
-Duolingo = type=http-response,pattern=^https?:\/\/ios-api\.duolingo\.com\/2017-06-30\/users\/\d+\?fields=,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/Duolingo.js
-
-# --- KINEMASTER (chxm1023) ---
-Kinemaster = type=http-response,pattern=^https?:\/\/api-account\.kinemasters\.com\/v\d\/user\/subscribe$,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/Kinemaster.js
-
-# --- TRUECALLER (chxm1023) ---
-Truecaller = type=http-response,pattern=^https?:\/\/premium-kindle\.truecaller\.com\/v\d\/subscriptions\/status$,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/Truecaller.js
-
-# --- CAMSCANNER (chxm1023) ---
-CamScanner = type=http-response,pattern=^https?:\/\/(api|api-cs)\.intsig\.net\/purchase\/cs\/query_property\?,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/CamScanner.js
-
-# --- BEAUTYPLUS (chxm1023) ---
-BeautyPlus = type=http-response,pattern=^https?:\/\/api\.mr\.pixocial\.com\/v\d\/manual_unlock$,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/BeautyPlus.js
-
-# --- LIGHTROOM (chxm1023) ---
+# --- 9. LIGHTROOM (yFamilys) ---
 Lightroom = type=http-response,pattern=^https?:\/\/photos\.adobe\.io\/v\d\/accounts$,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/Adobe.js
 
-# --- REVENUECAT (Generic Hook) ---
-RevenueCat = type=http-response,pattern=^https?:\/\/api\.revenuecat\.com\/v1\/(subscribers\/[^\/]+$|receipts$),requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/RevenueCat.js
+# --- 10. CAMSCANNER (yFamilys) ---
+CamScanner = type=http-response,pattern=^https?:\/\/(api|api-cs)\.intsig\.net\/purchase\/cs\/query_property\?,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/CamScanner.js
+
+# --- 11. BEAUTYPLUS (duyvinh09) ---
+BeautyPlus = type=http-response,pattern=^https?:\/\/api\.mr\.pixocial\.com\/v\d\/manual_unlock$,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/chxm1023/Rewrite/main/BeautyPlus.js
+
+# --- 12. LOCKET GOLD (NightmarketServer V10) ---
+Locket = type=http-response,pattern=^https:\/\/api\.revenuecat\.com\/v1\/(subscribers\/[^\/]+$|receipts$),requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/37MobileTeam/Locket/main/LocketGold.js
 
 [MITM]
-hostname = %APPEND% *.googlevideo.com, youtubei.googleapis.com, spclient.wg.spotify.com, api.revenuecat.com, api.picsart.com, pool.elsanow.io, ios-api.duolingo.com, api.getwinkapp.com, vn-api.getwinkapp.com, api-account.kinemasters.com, premium-kindle.truecaller.com, api.intsig.net, api-cs.intsig.net, api.mr.pixocial.com, photos.adobe.io
+hostname = %APPEND% *.googlevideo.com, youtubei.googleapis.com, spclient.wg.spotify.com, api-v2.soundcloud.com, api.revenuecat.com, api.picsart.com, us-central1-alight-creative.cloudfunctions.net, api.getwinkapp.com, vn-api.getwinkapp.com, premium-kindle.truecaller.com, photos.adobe.io, api.intsig.net, api-cs.intsig.net, api.mr.pixocial.com
